@@ -1,0 +1,25 @@
+.banner {
+  background-color: #617B30;
+  text-align: center;
+  color: white;
+  border-bottom-left-radius: 35px;
+  border-top-right-radius: 35px;
+}
+
+p {
+  padding-bottom: 15px;
+}
+
+.headers {
+  background-color: #A3BF45;
+}
+
+.input-header {
+  background-color: #D2E190;
+  padding-left: 20px;
+  border-top-left-radius: 35px;
+}
+
+.add {
+  padding-left: 15px;
+}
