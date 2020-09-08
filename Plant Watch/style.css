@@ -1,25 +1,191 @@
+/**-------------------------------heading--------------------------- **/
 .banner {
-  background-color: #617B30;
+  margin-top: 0;
   text-align: center;
-  color: white;
-  border-bottom-left-radius: 35px;
-  border-top-right-radius: 35px;
+  color: #617B30;
 }
 
-p {
-  padding-bottom: 15px;
+h1 {
+  margin-top: 0;
+  font-weight: bold;
 }
 
-.headers {
-  background-color: #A3BF45;
+/** -----------------------------------Tabs------------------------**/
+.tabs {
+  display: flex;
+  flex-wrap: wrap; // make sure it wraps
 }
 
+.tabs label {
+  order: 1; // Put the labels first
+  display: block;
+  padding: 1rem 2rem;
+  margin-right: 0.2rem;
+  cursor: pointer;
+  background: #c0dead;
+  font-weight: bold;
+  transition: background ease 0.2s;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.tabs .tab {
+  order: 99; // Put the tabs last
+  flex-grow: 1;
+  width: 100%;
+  display: none;
+  padding: 1rem;
+  background: #fff;
+}
+
+.tabs input[type="radio"] {
+  display: none;
+}
+
+.tabs input[type="radio"]:checked+label {
+  background: #fff;
+}
+
+.tabs input[type="radio"]:checked+label+.tab {
+  display: block;
+}
+
+@media (max-width: 45em) {
+
+  .tabs .tab,
+  .tabs label {
+    order: initial;
+  }
+
+  .tabs label {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 0.2rem;
+  }
+}
+
+/** -------------------------Page Styling---------------------**/
+body {
+  background: #eee;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 2vh;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  line-height: 1.5;
+  max-width: 80rem;
+  margin: 0 auto;
+  font-size: 112%;
+}
+
+/** -------------------------table styling ---------------------------**/
+.table {
+  border-collapse: collapse;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.table thead tr {
+  background-color: #fff4c7;
+  color: #617B30;
+  text-align: center;
+  font-weight: bold;
+}
+
+.table th, td {
+  padding: 12px 15px;
+  width: 2%;
+}
+
+.table tr:hover td {
+  background: #fee4e3;
+  color: #617B30;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+td {
+  word-wrap: break-word;
+}
+
+.editButtons {
+  text-align: center;
+}
+
+/** -----------------------edit option buttons-------------------- **/
+.option {
+  background-color: #ffcac2;
+  border-radius: 28px;
+  border: 1px solid #ffb0b0;
+  display: inline-block;
+  width: 100px;
+  margin: auto;
+  cursor: pointer;
+  color: #556b2f;
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.option:hover {
+  background-color: #fc9d9d;
+}
+
+.option:active {
+  position: relative;
+  top: 1px;
+}
+
+/** -------------------------input entry styling -----------------------**/
 .input-header {
-  background-color: #D2E190;
-  padding-left: 20px;
-  border-top-left-radius: 35px;
+  text-align: center;
+  background: #cff1ef;
+  border-radius: 30px;
+  padding-top: 1vh;
+  margin: 0 auto;
+  padding-left: 1rem;
+  color: #555555;
 }
 
 .add {
-  padding-left: 15px;
+  text-align: center;
+  font-weight: bold;
+  height: 1.5em;
+  color: #555555;
+}
+
+/** -------------------------submit button styling -----------------------**/
+#inputSubmit {
+  background-color: #abf0e9;
+  border-radius: 18px;
+  border: 1px solid #63b7af;
+  display: inline-block;
+  cursor: pointer;
+  color: #555555;
+  font-family: Arial;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 2px 14px;
+  text-decoration: none;
+}
+
+#inputSubmit:hover {
+  background-color: #63b7af;
+}
+
+#inputSubmit:active {
+  position: relative;
+  top: 1px;
 }
