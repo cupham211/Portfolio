@@ -5,41 +5,136 @@
   <meta charset="utf-8">
   <title>Bay Area Plant Watch</title>
   <!---Bootstrap  cdn----------------------->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div class="banner">
-    <p>
-    <h1>Plant Watch</h1>
-    </p>
+    <h1>Plant Watch: Bay Area</h1>
+    <br>
   </div>
-  <div class="headers">
-    <!---Bootstrap  class don't modify----------------------->
-    <table class="table table-hover">
-      <thead>
-      <tr>
-        <th scope="col">Store</th>
-        <th scope="col">Address</th>
-        <th scope="col">Website</th>
-        <th scope="col">Restock Day</th>
-        <th scope="col">Inventory</th>
-      </tr>
-      </thead>
-<!---Fill with AJAX data-------------------------------->
-      <tbody>
-      <tr>
-        <div id="fill" class="table-fill"></div>
-      </tr>
-</tbody>
-<!---Fill with AJAX data-------------------------------->
-    </table>
-  </div>
-<div class="input-header">
-    <h2>Add Entry</h2>
+  <div class="tabs">
+    <input type="radio" name="tabs" id="sbay" checked="checked">
+    <label for="sbay">South Bay</label>
+    <div class="tab">
+      <table class="table table-headers">
+        <thead>
+          <tr>
+            <th>Store</th>
+            <th>Address</th>
+            <th>Website</th>
+            <th>Restock Day</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <!---Fill with AJAX data-------------------------------->
+        <tbody>
+          <tr>
+            <div id="fillSbay" class="table-fill table-sbay"></div>
+          </tr>
+          <tr>
+            <td>testing</td>
+            <td>testing2</td>
+            <td>testing3</td>
+            <td>testing4</td>
+            <td class="editButtons"><input type="button" class="option inputEdit" value="Edit">
+              <input type="button" class="option inputDelete" value="Delete"></td>
+          </tr>
+          <tr>
+            <td>row2</td>
+          </tr>
+          <tr>
+            <td>row3</td>
+          </tr>
+        </tbody>
+        <!---Fill with AJAX data-------------------------------->
+      </table>
     </div>
+
+    <input type="radio" name="tabs" id="ebay">
+    <label for="ebay">East Bay</label>
+    <div class="tab">
+      <table class="table table-headers">
+        <thead>
+          <tr>
+            <th>Store</th>
+            <th>Address</th>
+            <th>Website</th>
+            <th>Restock Day</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <!---Fill with AJAX data-------------------------------->
+        <tbody>
+          <tr>
+            <div id="fillEbay" class="table-fill table-ebay"></div>
+          </tr>
+        </tbody>
+        <!---Fill with AJAX data-------------------------------->
+      </table>
+    </div>
+
+    <input type="radio" name="tabs" id="penin">
+    <label for="penin">Peninsula</label>
+    <div class="tab">
+      <table class="table table-headers">
+        <thead>
+          <tr>
+            <th>Store</th>
+            <th>Address</th>
+            <th>Website</th>
+            <th>Restock Day</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <!---Fill with AJAX data-------------------------------->
+        <tbody>
+          <tr>
+            <div id="fillPenin" class="table-fill table-penin"></div>
+          </tr>
+        </tbody>
+        <!---Fill with AJAX data-------------------------------->
+      </table>
+    </div>
+
+    <input type="radio" name="tabs" id="nbay">
+    <label for="nbay">North Bay</label>
+    <div class="tab">
+      <table class="table table-headers">
+        <thead>
+          <tr>
+            <th>Store</th>
+            <th>Address</th>
+            <th>Website</th>
+            <th>Restock Day</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <!---Fill with AJAX data-------------------------------->
+        <tbody>
+          <tr>
+            <div id="fillNbay" class="table-fill table-nbay"></div>
+          </tr>
+        </tbody>
+        <!---Fill with AJAX data-------------------------------->
+      </table>
+    </div>
+  </div>
+
+  <!---inputs--------------------------------->
+  <br>
+  <div class="input-header">
+    <h2>Add Entry</h2>
+
     <form class="add">
+      <label for="area">Area: </label>
+      <input list="bay-area" id="area" name="area" />
+      <datalist id="bay-area">
+        <option value="South Bay">
+        <option value="East Bay">
+        <option value="Peninsula">
+        <option value="North Bay">
+      </datalist>
       <label for="name">Store: </label>
       <input list="storeName" id="sName" name="inStore" />
       <!--list name and datalist id must match-->
@@ -52,11 +147,12 @@
         <option value="Walmart">
         <option value="Ikea">
       </datalist>
-      <label for="address">Address: <input type="text" id="addy" name="inAddy" value=""></label>
-      <label for="website">Website: <input type="text" id="webstore" name="inWebstore" value=""></label>
+      <label for="address">Address: <input type="text" id="addy" name="inAddy" placeholder="House # Street, City" value=""></label>
+      <label for="website">Website: <input type="text" id="webstore" name="inWebstore" placeholder="www.plantsite.com" value=""></label>
       <label for="restock">Restock Day: </label>
       <input list="inRestock" id="restock" name="inRestock" />
       <datalist id="inRestock">
+        <option value="Unknown/Varies">
         <option value="Sunday">
         <option value="Monday">
         <option value="Tuesday">
@@ -65,10 +161,11 @@
         <option value="Friday">
         <option value="Saturday">
       </datalist>
-      <label for="Inventory">Inventory: <input type="text" id="merch" name="inMerch" value=""></label>
       <input type="button" id="inputSubmit" value="+" />
     </form>
-  <script src="ajax.js"></script>
+    <br>
+  </div>
 </body>
 
 </html>
+
