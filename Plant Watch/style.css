@@ -29,6 +29,10 @@ h1 {
   border-top-right-radius: 25px;
 }
 
+.tabs label:hover {
+  background: #81a140;
+}
+
 .tabs .tab {
   order: 99; // Put the tabs last
   flex-grow: 1;
@@ -189,3 +193,4 @@ td {
   position: relative;
   top: 1px;
 }
+
