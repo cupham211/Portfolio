@@ -21,7 +21,6 @@ h1 {
   display: block;
   padding: 1rem 2rem;
   margin-right: 0.2rem;
-  cursor: pointer;
   background: #c0dead;
   font-weight: bold;
   transition: background ease 0.2s;
@@ -31,6 +30,7 @@ h1 {
 
 .tabs label:hover {
   background: #81a140;
+  cursor: pointer;
 }
 
 .tabs .tab {
@@ -87,54 +87,74 @@ body {
 .table {
   border-collapse: collapse;
   font-size: 0.9em;
-  min-width: 400px;
+  min-width: 300px;
   border-radius: 5px 5px 0 0;
   overflow: hidden;
-  table-layout: fixed;
+  table-layout: inherit;
 }
 
-.table thead tr {
+.table .tbody .tr {
+  display: table-row-group;
+}
+
+.tharea {
+  display: none;
+  background-color: #fff4c7;
+  color: #617B30;
+  text-align: center;
+  font-weight: bold;
+  padding: 12px 15px;
+  width: 2%;
+}
+
+.tr .th {
+  display: table-cell;
   background-color: #fff4c7;
   color: #617B30;
   text-align: center;
   font-weight: bold;
 }
 
-.table th, td {
+.table .th, .td {
   padding: 12px 15px;
   width: 2%;
 }
 
-.table tr:hover td {
+.tbody .tr:hover .td {
   background: #fee4e3;
   color: #617B30;
 }
 
-.table tbody tr {
+.tr {
+  display: table-row-group;
   border-bottom: 1px solid #dddddd;
 }
 
-.table tbody tr:nth-of-type(even) {
+.tbody .tr:nth-of-type(odd) {
   background-color: #f3f3f3;
 }
 
-td {
+.td {
+  display: table-cell;
   word-wrap: break-word;
+  text-align: center;
+  overflow: hidden;
+  max-width: 60px;
+  padding: 10px 0px 10px 0px;
 }
 
 .editButtons {
   text-align: center;
 }
-
 /** -----------------------edit option buttons-------------------- **/
 .option {
   background-color: #ffcac2;
   border-radius: 28px;
   border: 1px solid #ffb0b0;
-  display: inline-block;
+  display: inline;
   width: 100px;
+  min-width: 60px !important;
   margin: auto;
-  cursor: pointer;
   color: #556b2f;
   font-family: Arial;
   font-size: 14px;
@@ -145,6 +165,7 @@ td {
 
 .option:hover {
   background-color: #fc9d9d;
+  cursor: pointer;
 }
 
 .option:active {
@@ -153,21 +174,38 @@ td {
 }
 
 /** -------------------------input entry styling -----------------------**/
+h2 {
+  margin-top: 0;
+}
+
+select {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 1em;
+  font-weight: bold;
+  border: 2px solid #555555;
+  color: #555555;
+}
+input {
+  padding: 6px 10px;
+  border-radius: 4px;
+}
 .input-header {
+  padding: 1em;
   text-align: center;
   background: #cff1ef;
   border-radius: 30px;
-  padding-top: 1vh;
   margin: 0 auto;
   padding-left: 1rem;
   color: #555555;
 }
 
-.add {
+#add {
   text-align: center;
   font-weight: bold;
   height: 1.5em;
   color: #555555;
+  padding-bottom: 1em;
 }
 
 /** -------------------------submit button styling -----------------------**/
@@ -176,21 +214,21 @@ td {
   border-radius: 18px;
   border: 1px solid #63b7af;
   display: inline-block;
-  cursor: pointer;
   color: #555555;
   font-family: Arial;
   font-size: 22px;
   font-weight: bold;
   padding: 2px 14px;
   text-decoration: none;
+  outline: none;
 }
 
 #inputSubmit:hover {
   background-color: #63b7af;
+  cursor: pointer;
 }
 
 #inputSubmit:active {
   position: relative;
   top: 1px;
 }
-
