@@ -4,7 +4,6 @@
 <head>
   <meta charset="utf-8">
   <title>Bay Area Plant Watch</title>
-  <!---Bootstrap  cdn----------------------->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,129 +13,123 @@
     <br>
   </div>
   <div class="tabs">
-    <input type="radio" name="tabs" id="sbay" checked="checked">
-    <label for="sbay">South Bay</label>
+    <input type="radio" name="tabs" id="Sbay" checked="checked">
+    <label for="Sbay">South Bay</label>
     <div class="tab">
-      <table class="table table-headers">
-        <thead>
-          <tr>
-            <th>Store</th>
-            <th>Address</th>
-            <th>Website</th>
-            <th>Restock Day</th>
-            <th>Option</th>
-          </tr>
-        </thead>
+      <div class="table table-headers">
+        <div class="thead">
+          <div class="tr">
+          <div class="tharea">Area</div>
+          <div class="th">Store</div>
+          <div class="th">Address</div>
+          <div class="th">Website</div>
+          <div class="th">Restock Day</div>
+          <div class="th">Option</div>
+          </div>
+        </div>
         <!---Fill with AJAX data-------------------------------->
-        <tbody>
-          <tr>
-            <div id="fillSbay" class="table-fill table-sbay"></div>
-          </tr>
-          <tr>
-            <td>testing</td>
-            <td>testing2</td>
-            <td>testing3</td>
-            <td>testing4</td>
-            <td class="editButtons"><input type="button" class="option inputEdit" value="Edit">
-              <input type="button" class="option inputDelete" value="Delete"></td>
-          </tr>
-          <tr>
-            <td>row2</td>
-          </tr>
-          <tr>
-            <td>row3</td>
-          </tr>
-        </tbody>
+        <div class="tbodymain" id="tableSbay">
+        <div class="tbody" id="fillSbay">
+
+        </div>
+        </div>
         <!---Fill with AJAX data-------------------------------->
-      </table>
+      </div>
     </div>
 
-    <input type="radio" name="tabs" id="ebay">
-    <label for="ebay">East Bay</label>
+
+    <input type="radio" name="tabs" id="Ebay">
+    <label for="Ebay">East Bay</label>
     <div class="tab">
-      <table class="table table-headers">
-        <thead>
-          <tr>
-            <th>Store</th>
-            <th>Address</th>
-            <th>Website</th>
-            <th>Restock Day</th>
-            <th>Option</th>
-          </tr>
-        </thead>
+      <div class="table table-headers">
+        <div class="thead">
+          <div class="tr">
+            <div class="tharea">Area</div>
+          <div class="th">Store</div>
+          <div class="th">Address</div>
+          <div class="th">Website</div>
+          <div class="th">Restock Day</div>
+          <div class="th">Option</div>
+          </div>
+        </div>
         <!---Fill with AJAX data-------------------------------->
-        <tbody>
-          <tr>
-            <div id="fillEbay" class="table-fill table-ebay"></div>
-          </tr>
-        </tbody>
+        <div class="tbodymain" id="tableEbay">
+        <div class="tbody" id="fillEbay">
+
+        </div>
+        </div>
         <!---Fill with AJAX data-------------------------------->
-      </table>
+      </div>
     </div>
 
-    <input type="radio" name="tabs" id="penin">
-    <label for="penin">Peninsula</label>
-    <div class="tab">
-      <table class="table table-headers">
-        <thead>
-          <tr>
-            <th>Store</th>
-            <th>Address</th>
-            <th>Website</th>
-            <th>Restock Day</th>
-            <th>Option</th>
-          </tr>
-        </thead>
-        <!---Fill with AJAX data-------------------------------->
-        <tbody>
-          <tr>
-            <div id="fillPenin" class="table-fill table-penin"></div>
-          </tr>
-        </tbody>
-        <!---Fill with AJAX data-------------------------------->
-      </table>
-    </div>
 
-    <input type="radio" name="tabs" id="nbay">
-    <label for="nbay">North Bay</label>
-    <div class="tab">
-      <table class="table table-headers">
-        <thead>
-          <tr>
-            <th>Store</th>
-            <th>Address</th>
-            <th>Website</th>
-            <th>Restock Day</th>
-            <th>Option</th>
-          </tr>
-        </thead>
-        <!---Fill with AJAX data-------------------------------->
-        <tbody>
-          <tr>
-            <div id="fillNbay" class="table-fill table-nbay"></div>
-          </tr>
-        </tbody>
-        <!---Fill with AJAX data-------------------------------->
-      </table>
+  <input type="radio" name="tabs" id="Penin">
+  <label for="Penin">Peninsula</label>
+  <div class="tab">
+    <div class="table table-headers">
+      <div class="thead">
+        <div class="tr">
+          <div class="tharea">Area</div>
+        <div class="th">Store</div>
+        <div class="th">Address</div>
+        <div class="th">Website</div>
+        <div class="th">Restock Day</div>
+        <div class="th">Option</div>
+        </div>
+      </div>
+      <!---Fill with AJAX data-------------------------------->
+      <div class="tbodymain" id="tablePenin">
+      <div class="tbody" id="fillPenin">
+
+      </div>
+      </div>
+      <!---Fill with AJAX data-------------------------------->
     </div>
   </div>
+
+
+  <input type="radio" name="tabs" id="Nbay">
+  <label for="Nbay">North Bay</label>
+  <div class="tab">
+    <div class="table table-headers">
+      <div class="thead">
+        <div class="tr">
+          <div class="tharea">Area</div>
+        <div class="th">Store</div>
+        <div class="th">Address</div>
+        <div class="th">Website</div>
+        <div class="th">Restock Day</div>
+        <div class="th">Option</div>
+        </div>
+      </div>
+      <!---Fill with AJAX data-------------------------------->
+      <div class="tbodymain" id="tableNbay">
+      <div class="tbody" id="fillNbay">
+
+      </div>
+      </div>
+      <!---Fill with AJAX data-------------------------------->
+    </div>
+  </div>
+</div>
+
 
   <!---inputs--------------------------------->
   <br>
   <div class="input-header">
     <h2>Add Entry</h2>
 
-    <form class="add">
-      <label for="area">Area: </label>
-      <input list="bay-area" id="area" name="area" />
-      <datalist id="bay-area">
-        <option value="South Bay">
-        <option value="East Bay">
-        <option value="Peninsula">
-        <option value="North Bay">
-      </datalist>
+    <form id="add">
+
+      <select name="area" id="inArea">
+        <option value="" disabled selected>Area:</option>
+        <option value="South Bay">South Bay</option>
+        <option value="East Bay">East Bay</option>
+        <option value="Peninsula">Peninsula</option>
+        <option value="North Bay">North Bay</option>
+      </select>
       <label for="name">Store: </label>
-      <input list="storeName" id="sName" name="inStore" />
+      <input list="storeName" id="inStore" name="inStore" />
       <!--list name and datalist id must match-->
       <datalist id="storeName">
         <option value="Safeway">
@@ -147,10 +140,10 @@
         <option value="Walmart">
         <option value="Ikea">
       </datalist>
-      <label for="address">Address: <input type="text" id="addy" name="inAddy" placeholder="House # Street, City" value=""></label>
-      <label for="website">Website: <input type="text" id="webstore" name="inWebstore" placeholder="www.plantsite.com" value=""></label>
+      <label for="address">Address: <input type="text" id="inAddy" name="inAddy" placeholder="House # Street, City" value=""></label>
+      <label for="website">Website: <input type="text" id="inWeb" name="inWeb" placeholder="www.plantsite.com" value=""></label>
       <label for="restock">Restock Day: </label>
-      <input list="inRestock" id="restock" name="inRestock" />
+      <input list="inRestock" id="Restock" name="restock" />
       <datalist id="inRestock">
         <option value="Unknown/Varies">
         <option value="Sunday">
@@ -165,7 +158,9 @@
     </form>
     <br>
   </div>
+
+  <script src="create_tables.js"></script>
+  <script src="ajax.js"></script>
 </body>
 
 </html>
-
