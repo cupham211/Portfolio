@@ -84,82 +84,73 @@ body {
 }
 
 /** -------------------------table styling ---------------------------**/
-.table {
+table {
   border-collapse: collapse;
   font-size: 0.9em;
   min-width: 300px;
   border-radius: 5px 5px 0 0;
-  overflow: hidden;
   table-layout: inherit;
 }
 
-.table .tbody .tr {
-  display: table-row-group;
+tr {
+  border-bottom: 1px solid #dddddd;
 }
 
-.tharea {
-  display: none;
+
+th {
   background-color: #fff4c7;
   color: #617B30;
   text-align: center;
   font-weight: bold;
   padding: 12px 15px;
   width: 2%;
+  max-width: 60px;
 }
 
-.tr .th {
-  display: table-cell;
+.colArea {
   background-color: #fff4c7;
   color: #617B30;
   text-align: center;
   font-weight: bold;
-}
-
-.table .th, .td {
-  padding: 12px 15px;
   width: 2%;
 }
 
-.tbody .tr:hover .td {
+td {
+  padding: 10px 0px 10px 0px;
+  word-wrap: break-word;
+  text-align: center;
+  overflow: auto;
+  max-width: 60px;
+}
+
+tr:hover{
   background: #fee4e3;
   color: #617B30;
 }
 
-.tr {
-  display: table-row-group;
-  border-bottom: 1px solid #dddddd;
-}
 
-.tbody .tr:nth-of-type(odd) {
+tr:nth-of-type(odd) {
   background-color: #f3f3f3;
 }
 
-.td {
-  display: table-cell;
-  word-wrap: break-word;
+.inputEdit {
   text-align: center;
-  overflow: hidden;
-  max-width: 60px;
-  padding: 10px 0px 10px 0px;
 }
 
-.editButtons {
-  text-align: center;
-}
 /** -----------------------edit option buttons-------------------- **/
-.option {
+td .option {
   background-color: #ffcac2;
   border-radius: 28px;
   border: 1px solid #ffb0b0;
-  display: inline;
   width: 100px;
-  min-width: 60px !important;
-  margin: auto;
+  min-width: 60px;
   color: #556b2f;
   font-family: Arial;
   font-size: 14px;
   font-weight: bold;
-  padding: 10px 20px;
+  padding: 20px 20px;
+  line-height: 40%;
+  list-style: none;
   text-decoration: none;
 }
 
@@ -171,6 +162,15 @@ body {
 .option:active {
   position: relative;
   top: 1px;
+}
+
+a:hover {
+  cursor: pointer;
+  color: blue;
+}
+
+input[type=text] {
+  overflow: auto;
 }
 
 /** -------------------------input entry styling -----------------------**/
@@ -185,10 +185,13 @@ select {
   font-weight: bold;
   border: 2px solid #555555;
   color: #555555;
+  height: 40px;
 }
 input {
-  padding: 6px 10px;
+  padding: 10px 10px;
   border-radius: 4px;
+  height: 25px;
+  font-size: 11pt;
 }
 .input-header {
   padding: 1em;
@@ -221,6 +224,7 @@ input {
   padding: 2px 14px;
   text-decoration: none;
   outline: none;
+  height: 40px;
 }
 
 #inputSubmit:hover {
