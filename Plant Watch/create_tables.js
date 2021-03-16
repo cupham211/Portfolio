@@ -21,9 +21,9 @@ function makeTable(json, tableID){
   var row = '';
   let tab = tableID[5];
   let regions = {1: '<option value="1">South Bay</option>',
-                3: '<option value="2">East Bay</option>',
-                4: '<option value="3">Peninsula</option>',
-              2: '<option value="4">North Bay</option>',
+                3: '<option value="3">East Bay</option>',
+                4: '<option value="4">Peninsula</option>',
+              2: '<option value="2">North Bay</option>',
               5: '<option value="5">Outside Bay</option>'}
 
   for (i=0; i<json.length; i++) {
@@ -83,8 +83,8 @@ function lockTable(rowId, table) {
   let colD = document.getElementsByClassName('colData');
 
   for (i=0; i<colArea.length; i++){
-    if (colArea[i].style.display == "table-cell"){
-      colArea[i].style.display = 'none';
+    if (colArea[i].style.display == "table-cell;"){
+      colArea[i].style.display = 'none;';
     }
   }
 
@@ -154,8 +154,8 @@ function editRow(rowId, table){
 
     // display the column header "Area"
     for (i=0; i<colArea.length; i++){
-      if (colArea[i].style.display == 'none'){
-        colArea[i].style.display = 'table-cell';
+      if (colArea[i].style.display == 'none;'){
+        colArea[i].style.display = 'table-cell;';
       }
     }
 
@@ -177,7 +177,7 @@ function editRow(rowId, table){
       document.getElementById('staticArea'+ rowId).style.display = 'none';
     // unhide column data
     for (i=0; i<colD.length; i++){
-      if (colD[i].style.display == "none"){
+      if (colD[i].style.display == "none;"){
         colD[i].style.display = 'table-cell';
       } else {colD[i].style.display = 'none';}
     }
@@ -232,18 +232,17 @@ function pkg_obj_row(rowId, storeId, tableId){
     storeID: storeId
   };
 
-  // send to put
-  postPut("PUT", row_obj, tableId, tabInfo[1]);
-
   //close area column
   if (tableId != 'tableAbay') {
     let colArea = document.getElementsByClassName('colArea');
     for (i=0; i<colArea.length; i++){
-      if (colArea[i].style.display == "table-cell"){
-        colArea[i].style.display = 'none';
+      if (colArea[i].style.display == "table-cell;"){
+        colArea[i].style.display = 'none;';
       }
     }
   }
+  // send to put
+  postPut("PUT", row_obj, tableId, tabInfo[1]);
 }
 
 // Grab New Store Entry --------------------------------------------------------
