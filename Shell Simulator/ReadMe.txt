@@ -1,5 +1,5 @@
-To start program with testscript:
+To start program with a testscript:
 -go into file directory.
 -type 'make'
--type 'chmod +x ./p3testscript'
--type './p3testscript'
+-type 'chmod +x ./testscript'
+-type './testscript'
