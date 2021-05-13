@@ -10,3 +10,5 @@ The Office DB: https://drive.google.com/file/d/18UzH1IaDz1YEwSEdF0qTpk5p_yfvpzRv
 CI Project: The code and process for this collab is located in a separate repository named groupProject53.
 
 XiangQi Game: An object-oriented simulation of Xiang Qi (Chiness Chess).
+
+Shell Simulator: small shell simulation of linux.
