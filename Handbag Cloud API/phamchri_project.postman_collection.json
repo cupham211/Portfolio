@@ -1,0 +1,6106 @@
+{
+	"info": {
+		"_postman_id": "cebd2137-5b09-4a05-bf08-959dd780f51b",
+		"name": "phamchri_project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "configuration dummy user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set('freak_token', pm.response.json()[\"id_token\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"grant_type\": \"password\",\n    \"username\": \"freakinbiter@yahoo.com\",\n    \"password\": \"Sebastian2\",\n    \"client_id\": \"GmZ2IwzN1hKJZKmtaZklI6ePxK8X368k\",\n    \"client_secret\": \"icS-v8knNLsPrtO2CUH1u4Y0X_EuR3fu0y_plVG5xiJzukf6nG7rNnBweJWgB63E\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://493f-portfolio.us.auth0.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"493f-portfolio",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "configuration dummy user2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set('freak_token', pm.response.json()[\"id_token\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"grant_type\": \"password\",\n    \"username\": \"dwight@gmail.com\",\n    \"password\": \"Michael123\",\n    \"client_id\": \"GmZ2IwzN1hKJZKmtaZklI6ePxK8X368k\",\n    \"client_secret\": \"icS-v8knNLsPrtO2CUH1u4Y0X_EuR3fu0y_plVG5xiJzukf6nG7rNnBweJWgB63E\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://493f-portfolio.us.auth0.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"493f-portfolio",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 add bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set boat id environment variable from response",
+							"pm.environment.set(\"bag_id\", pm.response.json()[\"id\"]);",
+							"pm.environment.set(\"bag_brand\", pm.response.json()[\"brand\"]);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"   //Check if the response content is valid and matches the expected values",
+							"    pm.expect(pm.response.json()[\"model\"]).to.eq(\"Birkin\");",
+							"    pm.expect(pm.response.json()[\"brand\"]).to.eq(\"Hermes\");",
+							"    pm.expect(pm.response.json()[\"private\"]).to.be.false;",
+							"    pm.expect(pm.response.json()[\"owner\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"items\"]).to.eq(null);",
+							"   //Check if the self url is correct",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Birkin\", \"brand\": \"Hermes\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 bag no owner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 put bag no owner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 del bag no owner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "400 add bag with missing attributes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"400 status code\", function () {",
+							"    //Check for 4XX status code",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"4XX error message\", function () {",
+							"     //Check for appropriate error message",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"The request object is missing at least one of the required attributes\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"model\": \"Carla\"\n}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "406 add bag bad MIME",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 406\", function () {",
+							"    pm.response.to.have.status(406);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "text/html",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Birkin\", \"brand\": \"Hermes\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 add item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"lipstick\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"makeup\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"lipstick\", \"category\": \"makeup\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 delete item not in bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for apprropriate status code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 add item again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"lipstick\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"makeup\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"lipstick\", \"category\": \"makeup\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "400 add item with missing attributes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"400 status code\", function () {",
+							"    //Check for error code 400",
+							"    pm.response.to.have.status(400); ",
+							"});",
+							"",
+							"pm.test(\"4XX error message\", function () {",
+							"     //Check for appropriate error message",
+							"     pm.expect(pm.response.json()[\"Error\"]).to.eq(\"The request object is missing at least one required attribute\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"category\": \"bad item\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "406 add item bad MIME",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"406 status code\", function () {",
+							"   //Check if status code is 4XX",
+							"    pm.response.to.have.status(406);   ",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "text/html",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"lipstick\", \"category\": \"makeup\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get item (new item, no carrier)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"lipstick\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"makeup\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 get item with invalid id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 not found\", function () {",
+							"    //Check for 4XX status code",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/items/{{invalid_item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{invalid_item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 get item bad req",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"405 not found\", function () {",
+							"    //Check for 4XX status code",
+							"    pm.response.to.have.status(405);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "HEAD",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "406 get item bad MIME",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"406 status code\", function () {",
+							"    //Check for success 4xx response code",
+							"    pm.response.to.have.status(406);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/html",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 assign item to unreg bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 assign bag to user non matching",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 assign bag to user no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"401 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(401);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 assign bag to user invalid bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_bag_id}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_bag_id}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 assign claimed bag to another user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}/users/{{user_id2}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}",
+						"users",
+						"{{user_id2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 bad req",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"405 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(405);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{kgb_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "COPY",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 edit a bag no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"edited\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 edit a bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"edited\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 edit a bag no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Birkin\", \"brand\": \"Hermes\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 edit a bag belonging to other user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Birkin\", \"brand\": \"Hermes\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 edit a bag belonging to other user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Birkin\", \"brand\": \"Hermes\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 assign bag to user bad req",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {",
+							"    pm.response.to.have.status(405);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "COPY",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"edited\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 edit invalid bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"edited\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 get bag with invalid id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 not found\", function () {",
+							"    //Check for 4XX response",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 get bag with no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"401 not found\", function () {",
+							"    //Check for 4XX response",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 get bag belonging to other user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 forbidden\", function () {",
+							"    //Check for 4XX response",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 edit a bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Birkin\", \"brand\": \"Hermes\"}\n"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 get bag bad req",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"405 Method forbidden\", function () {",
+							"    //Check for 4XX response",
+							"    pm.response.to.have.status(405);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "COPY",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 assign item to bag no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"401 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 assign item to bag wrong token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for error code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign item to bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 assign item with invalid bag id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"   //Check for error code 4XX",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"404 error message\", function () {",
+							"     //Check for error code 4XX",
+							"     pm.expect(pm.response.json()[\"Error\"]).to.eq(\"The specified bag and/or item does not exist\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{invalid_bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{invalid_bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 assign item with invalid item id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"   //Check for error code 4XX",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"404 error message\", function () {",
+							"     //Check for error code 4XX",
+							"     pm.expect(pm.response.json()[\"Error\"]).to.eq(\"The specified bag and/or item does not exist\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 assign item with invalid bag id & invalid item id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"   //Check for error code 4XX",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"404 error message\", function () {",
+							"     //Check for error code 4XX",
+							"     pm.expect(pm.response.json()[\"Error\"]).to.eq(\"The specified bag and/or item does not exist\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_item_id}}/{{invalid_bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_item_id}}",
+						"{{invalid_bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 item already assigned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"   //Check for error code 4XX",
+							"   pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							"pm.test(\"403 error message\", function () {",
+							"     //Check for error code 4XX",
+							"     pm.expect(pm.response.json()[\"Error\"]).to.eq(\"The item already assigned to this bag\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 bad req",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"405 status code\", function () {",
+							"   //Check for error code 4XX",
+							"   pm.response.to.have.status(405);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "COPY",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "406 get bag after item assigned bad MIME",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"406 status code\", function () {",
+							"    //Check for success 4xx response code",
+							"    pm.response.to.have.status(406);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/html",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get bag after item assigned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content besides items is valid\", function () {",
+							"    //Check if the content is valid",
+							"    pm.expect(pm.response.json()[\"model\"]).to.eq(\"Birkin\");",
+							"    pm.expect(pm.response.json()[\"brand\"]).to.eq(\"Hermes\");",
+							"    pm.expect(pm.response.json()[\"private\"]).to.be.true;",
+							"    pm.expect(pm.response.json()[\"owner\"]).to.eq(pm.environment.get(\"user_id1\"));",
+							"",
+							"   //Check if the self url is correct",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"",
+							"",
+							"pm.test(\"items content is valid\", function () {",
+							"   //Check if load content is valid",
+							"   console.log(pm.response.json());",
+							"   pm.expect(pm.response.json()[\"items\"][0][\"id\"]).to.eq(pm.environment.get(\"item_id\"));",
+							"   const load_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.environment.get(\"item_id\").toString();",
+							"   pm.expect(pm.response.json()[\"items\"][0][\"self\"]).to.eq(load_url);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get item after assigned to bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content besides carrier is valid\", function () {",
+							"    //Check for appropriate content for item including self attribute",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"lipstick\");",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"makeup\");",
+							"    let isToday = moment().format(\"MM/DD/YYYY\");",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"",
+							"pm.test(\"carrier content is valid\", function () {",
+							"    //Check for appropriate content for carrier including self attribute",
+							"    pm.expect(pm.response.json()[\"carrier\"][\"id\"]).to.eq(pm.environment.get(\"bag_id\"));",
+							"    pm.expect(pm.response.json()[\"carrier\"][\"brand\"]).to.eq(pm.environment.get(\"bag_brand\"));",
+							"    const bag_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.environment.get(\"bag_id\").toString();",
+							"    pm.expect(pm.response.json()[\"carrier\"][\"self\"]).to.eq(bag_url);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 remove item from bag no auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"401 status code\", function () {",
+							"    //Check for apprropriate status code 4XX",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 remove item from bag wrong token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for apprropriate status code 4XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 remove item from bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for apprropriate status code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get item after removed from bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"lipstick\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"makeup\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get bag after item removed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"   //Check if the response content is valid and matches the expected values",
+							"    pm.expect(pm.response.json()[\"model\"]).to.eq(\"Birkin\");",
+							"    pm.expect(pm.response.json()[\"brand\"]).to.eq(\"Hermes\");",
+							"    pm.expect(pm.response.json()[\"private\"]).to.be.true;",
+							"    pm.expect(pm.response.json()[\"owner\"]).to.eq(pm.environment.get(\"user_id1\"));",
+							"    pm.expect(pm.response.json()[\"items\"]).to.eq(null);",
+							"   //Check if the self url is correct",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 remove item -- item not in this bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							"pm.test(\"403 error message\", function () {",
+							"     //Check for appropriate error message",
+							"     pm.expect(pm.response.json()[\"Error\"]).to.eq(\"No bag with this bag_id carries a item with this item_id\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 remove item with invalid bag id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{invalid_bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{invalid_bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 remove item with invalid item id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 remove item with invalid bag id & invalid item id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_item_id}}/{{invalid_bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_item_id}}",
+						"{{invalid_bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 re-assign item to bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 delete bag no auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"401 no content\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 delete bag wrong auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 no content\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 delete bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get item after carrier bag deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"lipstick\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"makeup\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 delete bag with invalid id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 not found\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{invalid_bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{invalid_bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 delete item with invalid id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 not found\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{invalid_item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{invalid_item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set boat id environment variable from response",
+							"pm.environment.set(\"bag_id\", pm.response.json()[\"id\"]);",
+							"pm.environment.set(\"bag_brand\", pm.response.json()[\"brand\"]);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"   //Check if the response content is valid and matches the expected values",
+							"    pm.expect(pm.response.json()[\"model\"]).to.eq(\"Neverfull\");",
+							"    pm.expect(pm.response.json()[\"brand\"]).to.eq(\"Louis Vuitton\");",
+							"    pm.expect(pm.response.json()[\"private\"]).to.be.false;",
+							"    pm.expect(pm.response.json()[\"owner\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"items\"]).to.eq(null);",
+							"   //Check if the self url is correct",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Neverfull\", \"brand\": \"Louis Vuitton\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign item to newest bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id}}/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id}}",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get bag after item assigned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content besides items is valid\", function () {",
+							"    //Check if the content is valid",
+							"    pm.expect(pm.response.json()[\"model\"]).to.eq(\"Neverfull\");",
+							"    pm.expect(pm.response.json()[\"brand\"]).to.eq(\"Louis Vuitton\");",
+							"    pm.expect(pm.response.json()[\"private\"]).to.be.true;",
+							"    //Check if the self url is correct",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"",
+							"",
+							"pm.test(\"items content is valid\", function () {",
+							"   //Check if item content is valid",
+							"   console.log(pm.response.json());",
+							"   pm.expect(pm.response.json()[\"items\"][0][\"id\"]).to.eq(pm.environment.get(\"item_id\"));",
+							"   const item_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.environment.get(\"item_id\").toString();",
+							"   pm.expect(pm.response.json()[\"items\"][0][\"self\"]).to.eq(item_url);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 delete item still in bag w out token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for apprropriate status code 2XX",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 delete item still in bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for apprropriate status code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get bag after item deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code\", function () {",
+							"    //Check for success 200 response code",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check if the content is valid",
+							"    pm.expect(pm.response.json()[\"model\"]).to.eq(\"Neverfull\");",
+							"    pm.expect(pm.response.json()[\"brand\"]).to.eq(\"Louis Vuitton\");",
+							"",
+							"    pm.expect(pm.response.json()[\"owner\"]).to.eq(pm.environment.get(\"user_id1\"));",
+							"    pm.expect(pm.response.json()[\"items\"]).to.eq(null);",
+							"   //Check if the self url is correct",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 delete bag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"bag_id\");",
+							"pm.environment.unset(\"bag_brand\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 add bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set bag id environment variable from response",
+							"pm.environment.set(\"bag_id1\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"   //Check if the response content is valid and matches the expected values",
+							"    pm.expect(pm.response.json()[\"model\"]).to.eq(\"Birkin\");",
+							"    pm.expect(pm.response.json()[\"brand\"]).to.eq(\"Hermes\");",
+							"    pm.expect(pm.response.json()[\"private\"]).to.be.false;",
+							"    pm.expect(pm.response.json()[\"owner\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"items\"]).to.eq(null);",
+							"   //Check if the self url is correct",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bags/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Birkin\", \"brand\": \"Hermes\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 add item01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id1\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"lipstick\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"makeup\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"lipstick\", \"category\": \"makeup\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 illegal update req",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"405 status code\", function () {",
+							"   //Check if status code is 4XX",
+							"    pm.response.to.have.status(405);   ",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "COPY",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"edited\", \"category\": \"life\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 update item01 Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"204 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(204);   ",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"edited\", \"category\": \"life\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 update bad item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"404 status code\", function () {",
+							"   //Check if status code is 4XX",
+							"    pm.response.to.have.status(404);   ",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"edited\", \"category\": \"life\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items/{{invalid_item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{invalid_item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "201 edit item01 back",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(204);   ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"lipstick\", \"category\": \"makeup\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 edit bad item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"404 status code\", function () {",
+							"   //Check if status code is 4XX",
+							"    pm.response.to.have.status(404);   ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"lipstick\", \"category\": \"makeup\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items/{{invalid_item_id}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{invalid_item_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag01 to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id1}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id1}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign item01 to bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for appropriate 2XX error message",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id1}}/{{bag_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id1}}",
+						"{{bag_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add item02",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id2\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"toothbrush\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"personal hygiene\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"toothbrush\", \"category\": \"personal hygiene\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign item02 to bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for appropriate 2XX error message",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id2}}/{{bag_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id2}}",
+						"{{bag_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add item03",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id3\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"perfume\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"fragrance\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"perfume\", \"category\": \"fragrance\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign item03 to bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for appropriate 2XX error message",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id3}}/{{bag_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id3}}",
+						"{{bag_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add item04",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id4\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"Snickers\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"food\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Snickers\", \"category\": \"food\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign item04 to bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for appropriate 2XX error message",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id4}}/{{bag_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id4}}",
+						"{{bag_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add item05",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id5\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"Sunglasses\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"accessories\");",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Sunglasses\", \"category\": \"accessories\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign item05 to bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for appropriate 2XX error message",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id5}}/{{bag_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id5}}",
+						"{{bag_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add item06",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const moment = require(\"moment\");",
+							"",
+							"//Set appropriate environment variable for item id",
+							"pm.environment.set(\"item_id6\", pm.response.json()[\"id\"]);",
+							"",
+							"pm.test(\"201 status code\", function () {",
+							"   //Check if status code is 2XX",
+							"    pm.response.to.have.status(201);   ",
+							"});",
+							"",
+							"",
+							"pm.test(\"content is valid\", function () {",
+							"    //Check for appropriate content including self value",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"chapstick\");",
+							"    pm.expect(pm.response.json()[\"carrier\"]).to.eq(null);",
+							"    pm.expect(pm.response.json()[\"category\"]).to.eq(\"skincare\");",
+							"",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/items/\" + pm.response.json()[\"id\"];",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);",
+							"});",
+							"// Check the creation date matches",
+							"let isToday = moment().format(\"MM/DD/YYYY\");",
+							"pm.test(\"Check date is Today\", function () {",
+							"    pm.expect(pm.response.json()[\"creation_date\"]).to.eql(isToday);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"chapstick\", \"category\": \"skincare\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign item06 to bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for appropriate 2XX error message",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id6}}/{{bag_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id6}}",
+						"{{bag_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all items with pagination",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code\", function () {",
+							"   //Check for appropriate 2XX status code",
+							"   pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"check total count\", function () {",
+							"    //Check for correct number of total items ",
+							"    pm.expect(pm.response.json()[\"count\"]).to.eq(6);",
+							"});",
+							"",
+							"pm.test(\"only correct number of items in res page\", function () {",
+							"    //Check for correct number of items for the page body",
+							"    pm.expect(pm.response.json()[\"items\"].length).to.eq(5);",
+							"});",
+							"",
+							"pm.test(\"next property exists\", function () {",
+							"    //Check if next property exists",
+							"    pm.expect(pm.response.json()[\"next\"]).to.exist;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "406 get all items with pagination MIME bad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"406 status code\", function () {",
+							"   //Check for appropriate 4XX status code",
+							"   pm.response.to.have.status(406);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/ogg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/items",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add bag02",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set bag id environment variable from response",
+							"pm.environment.set(\"bag_id2\", pm.response.json()[\"id\"]); ",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Neverfull\", \"brand\": \"Louis Vuitton\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag02 to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": false}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id2}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id2}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 assign item02 to bag02",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 status code\", function () {",
+							"    //Check for appropriate 4XX error message",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{item_id2}}/{{bag_id2}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{item_id2}}",
+						"{{bag_id2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add bag03",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set bag id environment variable from response",
+							"pm.environment.set(\"bag_id3\", pm.response.json()[\"id\"]); ",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Darcy\", \"brand\": \"Kate Spade\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag03 to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id3}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id3}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add bag04",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set bag id environment variable from response",
+							"pm.environment.set(\"bag_id4\", pm.response.json()[\"id\"]); ",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Sylvie\", \"brand\": \"Gucci\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag04 to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": false}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id4}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id4}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add bag05",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set bag id environment variable from response",
+							"pm.environment.set(\"bag_id5\", pm.response.json()[\"id\"]); ",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Nano\", \"brand\": \"Fendi\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag05 to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": true}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id5}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id5}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add bag06",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Set bag id environment variable from response",
+							"pm.environment.set(\"bag_id6\", pm.response.json()[\"id\"]); ",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"model\": \"Wallet\", \"brand\": \"Bottega Veneta\"}"
+				},
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "204 assign bag06 to user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 status code\", function () {",
+							"    //Check for error code 2XX",
+							"    pm.response.to.have.status(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"private\": false}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id6}}/users/{{user_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id6}}",
+						"users",
+						"{{user_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get all bags with pagination",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code\", function () {",
+							"   //Check for appropriate 2XX status code",
+							"   pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"check total count\", function () {",
+							"    //Check for correct number of total items ",
+							"    pm.expect(pm.response.json()[\"count\"]).to.eq(6);",
+							"});",
+							"",
+							"pm.test(\"only correct number of bags in response\", function () {",
+							"    //Check for correct number of loads",
+							"    pm.expect(pm.response.json()[\"bags\"].length).to.eq(5);",
+							"});",
+							"",
+							"pm.test(\"next property exists\", function () {",
+							"    //Check if next property exists",
+							"    pm.expect(pm.response.json()[\"next\"]).to.exist;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "401 get all bags bad token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"401 status code\", function () {",
+							"   //Check for appropriate 4XX status code",
+							"   pm.response.to.have.status(401);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bad_jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "406 get all bags bad MIME",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"406 status code\", function () {",
+							"   //Check for appropriate 4XX status code",
+							"   pm.response.to.have.status(406);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/html",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get all bags public no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 status code\", function () {",
+							"   //Check for appropriate 2XX status code",
+							"   pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 delete item01 no token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 no content\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id1\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item02",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id2\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id2}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "403 delete item03 non matching token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"403 no content\", function () {",
+							"    //Check for appropriate 4XX status code",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id3}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id3}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item03",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id3\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id3}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id3}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item04",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id4\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id4}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id4}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item05",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id5\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id5}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id5}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete item06",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"item_id6\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/items/{{item_id6}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"items",
+						"{{item_id6}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete bag01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"bag_id1\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id1}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete bag02",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"bag_id2\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id2}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete bag03",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"bag_id3\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id3}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id3}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete bag04",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"bag_id4\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id4}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id4}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete bag05",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"bag_id5\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id5}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id5}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete bag06",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 no content\", function () {",
+							"    //Check for appropriate 2XX status code",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.environment.unset(\"bag_id6\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bags/{{bag_id6}}",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bags",
+						"{{bag_id6}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "406 get all users bad MIME",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 406\", function () {",
+							"    pm.response.to.have.status(406);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/cmd",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/users",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "200 get all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/users",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "405 users bad req",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {",
+							"    pm.response.to.have.status(405);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "COPY",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/users",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
