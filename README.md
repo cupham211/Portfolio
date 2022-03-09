@@ -9,9 +9,9 @@ OTHER PROJECTS:
 
 DEMO VIDEOS:
 
-Plantstagram: https://drive.google.com/file/d/1kaBfZGGEQKReN9tu2vnQUFaVgesFeBN4/view?usp=sharing
+Plantstagram - Mobile app for plant tracking: https://drive.google.com/file/d/1kaBfZGGEQKReN9tu2vnQUFaVgesFeBN4/view?usp=sharing
 
-Plant Watch: https://drive.google.com/file/d/1yduIPHErvxJ-Tti2Sye9gyF3G-y3_U3M/view?usp=sharing
+Plant Watch - Web app for tracking Bay Area plant shops: https://drive.google.com/file/d/1yduIPHErvxJ-Tti2Sye9gyF3G-y3_U3M/view?usp=sharing
 
-The Office DB: https://drive.google.com/file/d/18UzH1IaDz1YEwSEdF0qTpk5p_yfvpzRv/view?usp=sharing
+The Office DB - The Office US TV fan site: https://drive.google.com/file/d/18UzH1IaDz1YEwSEdF0qTpk5p_yfvpzRv/view?usp=sharing
 
