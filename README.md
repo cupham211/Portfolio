@@ -1,14 +1,17 @@
 # Portfolio
-A collection of stuff I've coded during my journey into Computer Science. 
+
+Handbag Cloud API: https://github.com/cupham211/Portfolio/tree/master/Handbag%20Cloud%20API
+
+Shell Simulator: small shell simulation of linux -- https://github.com/cupham211/Portfolio/tree/master/Shell
+
+
+OTHER PROJECTS:
 
 DEMO VIDEOS:
+
+Plantstagram: https://drive.google.com/file/d/1kaBfZGGEQKReN9tu2vnQUFaVgesFeBN4/view?usp=sharing
 
 Plant Watch: https://drive.google.com/file/d/1yduIPHErvxJ-Tti2Sye9gyF3G-y3_U3M/view?usp=sharing
 
 The Office DB: https://drive.google.com/file/d/18UzH1IaDz1YEwSEdF0qTpk5p_yfvpzRv/view?usp=sharing
 
-CI Project: The code and process for this collab is located in a separate repository named groupProject53.
-
-XiangQi Game: An object-oriented simulation of Xiang Qi (Chiness Chess).
-
-Shell Simulator: small shell simulation of linux.
