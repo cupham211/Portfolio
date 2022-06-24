@@ -1,5 +1,5 @@
-﻿App URL: <https://final-phamchri.wl.r.appspot.com> Acct Creation URL: Same As Above 
-
+﻿App URL: <https://final-phamchri.wl.r.appspot.com> 
+ 
 
 
 Handbag API Spec
@@ -7,40 +7,6 @@ Handbag API Spec
 Cloud Application
 
 Fall 2021
-
-[Data Model](#_heading=h.30j0zll)
-
-[Create a Bag](#_heading=h.tyjcwt)
-
-[View a Bag](#_heading=h.z337ya) (protected)
-
-[View all Bags](#_heading=h.1pxezwc) (protected)
-
-[Update a Bag](#_heading=h.41mghml) (protected)
-
-[Delete a Bag](#_heading=h.2lwamvv) /remove from a member (protected)
-
-[Create an Item](#_heading=h.3cqmetx)
-
-[View an Item](#_heading=h.3hv69ve)
-
-[View all Items](#_heading=h.48pi1tg)
-
-[Update an Item](#_heading=h.2fk6b3p)
-
-[Delete an Item](#_heading=h.2koq656)
-
-[Assign an Item to a Bag](#_heading=h.3bj1y38) (protected)
-
-[Remove an Item from a Bag](#_heading=h.2hio093) (protected)
-
-[View all items for a given Bag](#_heading=h.1nia2ey) (protected)
-
-[View all Members](#_heading=h.2eclud0)
-
-
-
-Assign a Bag to a Member (protected)
 
 
 # Data Model
